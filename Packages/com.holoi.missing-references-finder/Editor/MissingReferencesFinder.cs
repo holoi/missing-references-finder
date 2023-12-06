@@ -80,7 +80,7 @@ namespace MissingReferencesFinder
             "m_TargetTexture: {fileID:",
         };
 
-        [MenuItem("Tools/Missing References Hunter")]
+        [MenuItem("Tools/Missing References Finder")]
         public static void LaunchUnreferencedAssetsWindow()
         {
             GetWindow<MissingReferencesWindow>();
