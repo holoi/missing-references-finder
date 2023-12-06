@@ -129,12 +129,10 @@ namespace MissingReferencesFinder
             Show();
 
             var assetPaths = AssetDatabase.GetAllAssetPaths().ToList();
-
             EditorUtility.ClearProgressBar();
             
             var regexFileAndGuid = new Regex(@"fileID: \d+, guid: [a-f0-9]" + "{" + "32" + "}");
             var regexFileId = new Regex(@"{fileID: \d+}");
-            
             var count = 0;
             foreach (var assetPath in assetPaths)
             {
@@ -170,7 +168,6 @@ namespace MissingReferencesFinder
 #if LOGS
                 Debug.LogWarning("[Analyzing: " + assetPath + " Lines: " + lines.Length + "]");
 #endif
-                
                 var refsData = new AssetReferencesData();
                 
                 if (lines.Length > 0)
@@ -238,6 +235,24 @@ namespace MissingReferencesFinder
                                     Debug.Log("Guid: " + externalGuid + " ignored");
                                 }
 #endif
+                            }
+                        }
+
+                        if (line.Contains("guid")) 
+                        {
+                            var regexGuid = new Regex("[a-f0-9]{32}");
+                            var guidMatches = regexGuid.Matches(line);
+                            
+                            for (var i = 0; i < guidMatches.Count; i++)
+                            {
+                                var match = guidMatches[i];
+                                var str = match.Value;
+                                var externalGuid = str.Substring(str.Length - 32);
+
+                                if (!externalGuid.StartsWith("0000000000"))
+                                {
+                                    refsData.ExternalGuids.Add(new ExternalGuidRegistry(externalGuid, index));
+                                }
                             }
                         }
 
@@ -371,7 +386,7 @@ namespace MissingReferencesFinder
 
             bool CanAnalyzeType(Type type)
             {
-                return type == typeof(GameObject) || type == typeof(SceneAsset) 
+                return type == typeof(Shader) || type == typeof(GameObject) || type == typeof(SceneAsset) 
                                                   || DerivesFromOrEqual(type, typeof(ScriptableObject));
             }
             
