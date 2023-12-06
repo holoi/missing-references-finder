@@ -632,7 +632,7 @@ namespace MissingReferencesFinder
                 GUI.color = asset.RefsData.UnknownLocalRefs > 0 ? Color.yellow : Color.green;
                 EditorGUILayout.SelectableLabel("Unknown FileIDs: " + asset.RefsData.UnknownLocalRefs, GUILayout.Width(120f), GUILayout.Height(18f));
                 GUI.color = asset.RefsData.EmptyFileIds.Count > 0 ? Color.yellow : Color.green;
-                EditorGUILayout.SelectableLabel("Empty FileIDs: " + asset.RefsData.EmptyFileIds.Count, GUILayout.Width(120f, GUILayout.Height(18f)));    
+                EditorGUILayout.SelectableLabel("Empty FileIDs: " + asset.RefsData.EmptyFileIds.Count, GUILayout.Width(120f), GUILayout.Height(18f));    
                 GUI.color = prevColor;
                 
                 prevColor = GUI.color;
