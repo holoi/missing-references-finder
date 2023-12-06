@@ -13,7 +13,7 @@ using UnityEngine;
 // ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable once CheckNamespace
-namespace MissingReferencesHunter
+namespace MissingReferencesFinder
 {
     public class MissingReferencesWindow : EditorWindow
     {
@@ -388,7 +388,6 @@ namespace MissingReferencesHunter
         private readonly List<string> _defaultIgnorePatterns = new List<string>
         {
             @"ProjectSettings/",
-            @"Packages/",
             @"\.asmdef$",
             @"link\.xml$",
             @"\.csv$",

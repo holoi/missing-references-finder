@@ -1,5 +1,5 @@
 {
-    "name": "MissingReferencesHunter.Editor",
+    "name": "MissingReferencesFinder.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"
