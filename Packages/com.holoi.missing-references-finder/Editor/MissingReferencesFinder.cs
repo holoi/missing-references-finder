@@ -603,11 +603,11 @@ namespace MissingReferencesFinder
                 var asset = filteredAssets[i];
                 EditorGUILayout.BeginHorizontal();
                 
-                EditorGUILayout.LabelField(i.ToString(), GUILayout.Width(25f));
+                EditorGUILayout.SelectableLabel(i.ToString(), GUILayout.Width(25f), GUILayout.Height(18f));
                 
                 prevColor = GUI.color;
                 GUI.color = asset.ValidType ? Color.white : Color.red;
-                EditorGUILayout.LabelField(asset.TypeName, GUILayout.Width(100f));    
+                EditorGUILayout.SelectableLabel(asset.TypeName, GUILayout.Width(100f), GUILayout.Height(18f));    
                 GUI.color = prevColor;
                 
                 if (asset.ValidType)
@@ -616,7 +616,7 @@ namespace MissingReferencesFinder
                     guiContent.text = Path.GetFileName(asset.Path);
 
                     var alignment = GUI.skin.button.alignment;
-                    GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                    GUI.skin.button.alignment = TextAnchor.MiddleCenter;
 
                     if (GUILayout.Button(guiContent, GUILayout.Width(280f), GUILayout.Height(18f)))
                     {
@@ -628,20 +628,23 @@ namespace MissingReferencesFinder
                 
                 prevColor = GUI.color;
                 GUI.color = asset.RefsData.UnknownExternalRefs > 0 ? Color.red : Color.green;
-                EditorGUILayout.LabelField("Unknown Guids: " + asset.RefsData.UnknownExternalRefs, GUILayout.Width(120f));
+                EditorGUILayout.SelectableLabel("Unknown Guids: " + asset.RefsData.UnknownExternalRefs, GUILayout.Width(120f), GUILayout.Height(18f));
                 GUI.color = asset.RefsData.UnknownLocalRefs > 0 ? Color.yellow : Color.green;
-                EditorGUILayout.LabelField("Unknown FileIDs: " + asset.RefsData.UnknownLocalRefs, GUILayout.Width(120f));
+                EditorGUILayout.SelectableLabel("Unknown FileIDs: " + asset.RefsData.UnknownLocalRefs, GUILayout.Width(120f), GUILayout.Height(18f));
                 GUI.color = asset.RefsData.EmptyFileIds.Count > 0 ? Color.yellow : Color.green;
-                EditorGUILayout.LabelField("Empty FileIDs: " + asset.RefsData.EmptyFileIds.Count, GUILayout.Width(120f));    
+                EditorGUILayout.SelectableLabel("Empty FileIDs: " + asset.RefsData.EmptyFileIds.Count, GUILayout.Width(120f, GUILayout.Height(18f)));    
                 GUI.color = prevColor;
                 
                 prevColor = GUI.color;
                 GUI.color = Color.gray;
-                EditorGUILayout.LabelField(asset.Guid, GUILayout.Width(250f));
+                EditorGUILayout.SelectableLabel(asset.Guid, GUILayout.Width(250f), GUILayout.Height(18f));
                 GUI.color = prevColor;
                 
-                EditorGUILayout.LabelField(asset.Path);
+                EditorGUILayout.SelectableLabel(asset.Path, GUILayout.Width(300f), GUILayout.Height(18f));
                 
+                EditorGUILayout.SelectableLabel((asset.RefsData.UnknownExternalRefs == 0) ? "" : asset.RefsData.ExternalGuids.FirstOrDefault(x => !x.Used).Id, GUILayout.Height(18f));
+
+
                 EditorGUILayout.EndHorizontal();
             }
 
