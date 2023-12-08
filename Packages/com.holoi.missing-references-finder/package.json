@@ -1,6 +1,6 @@
 {
   "name": "com.holoi.missing-references-finder",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "displayName": "Missing References Finder",
   "description": "This tool finds missing or null references in Unity project assets.",
   "unity": "2022.3",
