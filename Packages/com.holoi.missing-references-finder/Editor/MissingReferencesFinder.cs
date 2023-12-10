@@ -128,18 +128,19 @@ namespace MissingReferencesFinder
             Clear();
             Show();
 
-            var assetPaths = AssetDatabase.GetAllAssetPaths().ToList();
+            string[] allAssetGUIDs = AssetDatabase.FindAssets("*");
             EditorUtility.ClearProgressBar();
             
             var regexFileAndGuid = new Regex(@"fileID: \d+, guid: [a-f0-9]" + "{" + "32" + "}");
             var regexFileId = new Regex(@"{fileID: \d+}");
             var count = 0;
-            foreach (var assetPath in assetPaths)
+            foreach (var guid in allAssetGUIDs)
             {
                 EditorUtility.DisplayProgressBar("Missing References", "Searching for missing references",
-                    (float) count / assetPaths.Count);
+                    (float) count / allAssetGUIDs.Length);
                 count++;
 
+                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
                 var guidStr = AssetDatabase.AssetPathToGUID(assetPath);
 
                 _result.Guids.Add(guidStr);
@@ -157,7 +158,7 @@ namespace MissingReferencesFinder
 
                 if (!validAssetType) 
                     continue;
-                
+
                 if (!CanAnalyzeType(type))
                     continue;
 
@@ -165,11 +166,12 @@ namespace MissingReferencesFinder
 
                 var lines = TryReadAsLines(assetPath);
 
+
 #if LOGS
                 Debug.LogWarning("[Analyzing: " + assetPath + " Lines: " + lines.Length + "]");
 #endif
                 var refsData = new AssetReferencesData();
-                
+
                 if (lines.Length > 0)
                 {
                     for (var index = 0; index < lines.Length; index++)
@@ -386,8 +388,8 @@ namespace MissingReferencesFinder
 
             bool CanAnalyzeType(Type type)
             {
-                return type == typeof(Shader) || type == typeof(GameObject) || type == typeof(SceneAsset) 
-                                                  || DerivesFromOrEqual(type, typeof(ScriptableObject));
+                return true; //type == typeof(Shader) || type == typeof(GameObject) || type == typeof(SceneAsset) 
+                                        //          || DerivesFromOrEqual(type, typeof(ScriptableObject));
             }
             
             bool DerivesFromOrEqual(Type a, Type b)
@@ -640,7 +642,8 @@ namespace MissingReferencesFinder
                 EditorGUILayout.SelectableLabel(asset.Guid, GUILayout.Width(250f), GUILayout.Height(18f));
                 GUI.color = prevColor;
                 
-                EditorGUILayout.SelectableLabel(asset.Path, GUILayout.Width(300f), GUILayout.Height(18f));
+                EditorGUILayout.SelectableLabel(asset.Path, GUILayout.Width(300f), GUILayout.Height(18f));  
+                EditorGUILayout.SelectableLabel(AssetDatabase.GetMainAssetTypeAtPath(asset.Path).ToString(), GUILayout.Width(300f), GUILayout.Height(18f));
                 
                 EditorGUILayout.SelectableLabel((asset.RefsData.UnknownExternalRefs == 0) ? "" : asset.RefsData.ExternalGuids.FirstOrDefault(x => !x.Used).Id, GUILayout.Height(18f));
 
