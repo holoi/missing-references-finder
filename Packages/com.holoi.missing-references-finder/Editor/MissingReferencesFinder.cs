@@ -642,11 +642,10 @@ namespace MissingReferencesFinder
                 EditorGUILayout.SelectableLabel(asset.Guid, GUILayout.Width(250f), GUILayout.Height(18f));
                 GUI.color = prevColor;
                 
+                EditorGUILayout.SelectableLabel((asset.RefsData.UnknownExternalRefs == 0) ? "" : 
+                    string.Join("\n", asset.RefsData.ExternalGuids.Where(x => !x.Used).Select(x => x.Id).ToArray()), GUILayout.Height(18f));
                 EditorGUILayout.SelectableLabel(asset.Path, GUILayout.Width(300f), GUILayout.Height(18f));  
                 EditorGUILayout.SelectableLabel(AssetDatabase.GetMainAssetTypeAtPath(asset.Path).ToString(), GUILayout.Width(300f), GUILayout.Height(18f));
-                
-                EditorGUILayout.SelectableLabel((asset.RefsData.UnknownExternalRefs == 0) ? "" : asset.RefsData.ExternalGuids.FirstOrDefault(x => !x.Used).Id, GUILayout.Height(18f));
-
 
                 EditorGUILayout.EndHorizontal();
             }
